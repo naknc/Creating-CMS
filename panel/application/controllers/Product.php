@@ -4,8 +4,7 @@ class Product extends CI_Controller {
 
     public $viewFolder = "";
 
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
 
         $this->viewFolder = "product_v";
@@ -13,8 +12,7 @@ class Product extends CI_Controller {
         $this->load->model("product_model");
     }
 
-    public function index()
-    {
+    public function index(){
         $viewData = new stdClass();
 
         /**Tablodan Verilerin Getirilmesi.. */
@@ -28,8 +26,7 @@ class Product extends CI_Controller {
         $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
     }
 
-    public function new_form()
-    {
+    public function new_form(){
         $viewData = new stdClass();
         
         /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
@@ -40,8 +37,7 @@ class Product extends CI_Controller {
 
     }
 
-    public function save()
-    {
+    public function save(){
         $this->load->library("form_validation");
 
         //kurallar yazılır..
@@ -101,8 +97,7 @@ class Product extends CI_Controller {
         
     }
 
-    public function update_form($id)
-    {
+    public function update_form($id){
         $viewData = new stdClass();
 
         /**Tablodan Verilerin Getirilmesi.. */
@@ -121,8 +116,7 @@ class Product extends CI_Controller {
 
     }
 
-    public function update($id)
-    {
+    public function update($id){
         $this->load->library("form_validation");
 
         //kurallar yazılır..
@@ -190,5 +184,22 @@ class Product extends CI_Controller {
         
     }
 
+    public function delete($id){
+        $delete = $this->product_model->delete(
+            array(
+                "id" => $id
+            )
+        );
 
+        //TODO ALERT Sistemi Eklenecek...
+        if($delete){
+
+            redirect(base_url("product"));
+
+        } else{
+
+            redirect(base_url("product"));
+
+        }
+    }
 }

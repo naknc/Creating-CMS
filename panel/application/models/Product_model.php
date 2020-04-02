@@ -4,8 +4,7 @@ class Product_model extends CI_Model {
 
 public $tableName = "products";
 
-    public function __construct()
-    {
+    public function __construct(){
         parent:: __construct();
     }
 
@@ -13,7 +12,6 @@ public $tableName = "products";
     public function get($where = array()){
         return $this->db->where($where)->get($this->tableName)->row();
     }
-
 
     /**Tüm kayıtları bana getirecek olan metot.. */
     public function get_all($where = array()){
@@ -33,4 +31,7 @@ public $tableName = "products";
 
     }
 
+    public function delete($where = array()){
+        return $this->db->where($where)->delete($this->tableName);
+    }
 }
