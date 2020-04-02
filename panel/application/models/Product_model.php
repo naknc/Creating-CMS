@@ -9,10 +9,16 @@ public $tableName = "products";
         parent:: __construct();
     }
 
-    /**Tüm kayıtları bana getirecek olan metot.. */
-    public function get_all(){
+    /**Sadece bir kaydı bana getirecek olan metot.. */
+    public function get($where = array()){
+        return $this->db->where($where)->get($this->tableName)->row();
+    }
 
-        return $this->db->get($this->tableName)->result();
+
+    /**Tüm kayıtları bana getirecek olan metot.. */
+    public function get_all($where = array()){
+
+        return $this->db->where($where)->get($this->tableName)->result();
     }
 
     public function add($data = array()){
