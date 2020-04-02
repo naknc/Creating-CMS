@@ -1,10 +1,5 @@
 <div class="row">
 	<div class="col-md-12">
-		<h4 class="m-b-lg">
-			Ürünün fotoğrafları
-		</h4>
-	</div><!-- END column -->
-	<div class="col-md-12">
 	<div class="widget">
 		<div class="widget-body">
 		<form action="../api/dropzone" class="dropzone" data-plugin="dropzone" data-options="{ url: '../api/dropzone'}">
@@ -27,7 +22,7 @@
 	<div class="col-md-12">
 	<div class="widget">
 		<div class="widget-body">
-		<table class="table table-bordered table-striped table-hover">
+		<table class="table table-bordered table-striped table-hover pictures_list">
 			<thead>
 				<th>#id</th>
 				<th>Görsel</th>
@@ -37,10 +32,10 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>#1</td>
-					<td><img width="30" src="https://kablosuzkedi.com/wp-content/uploads/2016/11/Ekran-Resmi-2016-11-12-01.39.36.png" alt="" class="img-responsive"></td>
+					<td class="w100 text-center">#1</td>
+					<td class="w100 text-center"><img width="30" src="https://kablosuzkedi.com/wp-content/uploads/2016/11/Ekran-Resmi-2016-11-12-01.39.36.png" alt="" class="img-responsive"></td>
 					<td>deneme-urunu.jpg</td>
-					<td>
+					<td class="w100 text-center">
 						<input
 							data-url="<?php echo base_url("product/isActiveSetter")?>"
 							class="isActive"
@@ -50,19 +45,19 @@
 							<?php echo (true) ? "checked" : ""; ?>
 						/>
 					</td>
-					<td>
+					<td class="w100 text-center">
 						<button 
 							data-url="<?php echo "product/delete"; ?>" 
-							class="btn btn-sm btn-danger btn-outline remove-btn">
+							class="btn btn-sm btn-danger btn-outline btn-block remove-btn">
 							<i class="fa fa-trash"></i> Sil
 						</button>
 					</td>
 				</tr>
 				<tr>
-					<td>#1</td>
-					<td><img width="30" src="https://kablosuzkedi.com/wp-content/uploads/2016/11/Ekran-Resmi-2016-11-12-01.39.36.png" alt="" class="img-responsive"></td>
+					<td class="w100 text-center">#1</td>
+					<td class="w100 text-center"><img width="30" src="https://kablosuzkedi.com/wp-content/uploads/2016/11/Ekran-Resmi-2016-11-12-01.39.36.png" alt="" class="img-responsive"></td>
 					<td>deneme-urunu.jpg</td>
-					<td>
+					<td class="w100 text-center">
 						<input
 							data-url="<?php echo base_url("product/isActiveSetter")?>"
 							class="isActive"
@@ -72,19 +67,19 @@
 							<?php echo (true) ? "checked" : ""; ?>
 						/>
 					</td>
-					<td>
+					<td class="w100 text-center">
 						<button 
 							data-url="<?php echo "product/delete"; ?>" 
-							class="btn btn-sm btn-danger btn-outline remove-btn">
+							class="btn btn-sm btn-danger btn-outline btn-block remove-btn">
 							<i class="fa fa-trash"></i> Sil
 						</button>
 					</td>
 				</tr>
 				<tr>
-					<td>#1</td>
-					<td><img width="30" src="https://kablosuzkedi.com/wp-content/uploads/2016/11/Ekran-Resmi-2016-11-12-01.39.36.png" alt="" class="img-responsive"></td>
+					<td class="w100 text-center">#1</td>
+					<td class="w100 text-center"><img width="30" src="https://kablosuzkedi.com/wp-content/uploads/2016/11/Ekran-Resmi-2016-11-12-01.39.36.png" alt="" class="img-responsive"></td>
 					<td>deneme-urunu.jpg</td>
-					<td>
+					<td class="w100 text-center">
 						<input
 							data-url="<?php echo base_url("product/isActiveSetter")?>"
 							class="isActive"
@@ -94,10 +89,10 @@
 							<?php echo (true) ? "checked" : ""; ?>
 						/>
 					</td>
-					<td>
+					<td class="w100 text-center">
 						<button 
 							data-url="<?php echo "product/delete"; ?>" 
-							class="btn btn-sm btn-danger btn-outline remove-btn">
+							class="btn btn-sm btn-danger btn-outline btn-block remove-btn">
 							<i class="fa fa-trash"></i> Sil
 						</button>
 					</td>
