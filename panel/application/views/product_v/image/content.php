@@ -25,6 +25,15 @@
 	<div class="col-md-12">
 	<div class="widget">
 		<div class="widget-body">
+
+		<?php if(empty ($item_images)) { ?>
+
+<div class="alert alert-info text-center">
+	<p>Burada herhangi bir resim bulunmamaktadır.</p>
+</div>
+
+<?php } else { ?>
+
 		<table class="table table-bordered table-striped table-hover pictures_list">
 			<thead>
 				<th>#id</th>
@@ -34,10 +43,12 @@
 				<th>İşlem</th>
 			</thead>
 			<tbody>
+
+			<?php foreach($item_images as $image ){ ?>
 				<tr>
-					<td class="w100 text-center">#1</td>
-					<td class="w100 text-center"><img width="30" src="https://kablosuzkedi.com/wp-content/uploads/2016/11/Ekran-Resmi-2016-11-12-01.39.36.png" alt="" class="img-responsive"></td>
-					<td>deneme-urunu.jpg</td>
+					<td class="w100 text-center">#<?php echo $image->id; ?></td>
+					<td class="w100 text-center"><img width="30" src="<?php echo base_url("uploads/{$viewFolder}/$image->img_url");?>" alt="<?php echo $image->img_url;?>" class="img-responsive"></td>
+					<td><?php echo $image->img_url; ?></td>
 					<td class="w100 text-center">
 						<input
 							data-url="<?php echo base_url("product/isActiveSetter")?>"
@@ -45,7 +56,7 @@
 							type="checkbox" 
 							data-switchery 
 							data-color="#10c469" 
-							<?php echo (true) ? "checked" : ""; ?>
+							<?php echo ($image->id) ? "checked" : ""; ?>
 						/>
 					</td>
 					<td class="w100 text-center">
@@ -56,52 +67,10 @@
 						</button>
 					</td>
 				</tr>
-				<tr>
-					<td class="w100 text-center">#1</td>
-					<td class="w100 text-center"><img width="30" src="https://kablosuzkedi.com/wp-content/uploads/2016/11/Ekran-Resmi-2016-11-12-01.39.36.png" alt="" class="img-responsive"></td>
-					<td>deneme-urunu.jpg</td>
-					<td class="w100 text-center">
-						<input
-							data-url="<?php echo base_url("product/isActiveSetter")?>"
-							class="isActive"
-							type="checkbox" 
-							data-switchery 
-							data-color="#10c469" 
-							<?php echo (true) ? "checked" : ""; ?>
-						/>
-					</td>
-					<td class="w100 text-center">
-						<button 
-							data-url="<?php echo "product/delete"; ?>" 
-							class="btn btn-sm btn-danger btn-outline btn-block remove-btn">
-							<i class="fa fa-trash"></i> Sil
-						</button>
-					</td>
-				</tr>
-				<tr>
-					<td class="w100 text-center">#1</td>
-					<td class="w100 text-center"><img width="30" src="https://kablosuzkedi.com/wp-content/uploads/2016/11/Ekran-Resmi-2016-11-12-01.39.36.png" alt="" class="img-responsive"></td>
-					<td>deneme-urunu.jpg</td>
-					<td class="w100 text-center">
-						<input
-							data-url="<?php echo base_url("product/isActiveSetter")?>"
-							class="isActive"
-							type="checkbox" 
-							data-switchery 
-							data-color="#10c469" 
-							<?php echo (true) ? "checked" : ""; ?>
-						/>
-					</td>
-					<td class="w100 text-center">
-						<button 
-							data-url="<?php echo "product/delete"; ?>" 
-							class="btn btn-sm btn-danger btn-outline btn-block remove-btn">
-							<i class="fa fa-trash"></i> Sil
-						</button>
-					</td>
-				</tr>
+			<?php } ?>
 			</tbody>
 		</table>
+		<?php } ?>
 		</div><!-- .widget-body -->
 	</div><!-- .widget -->
 	</div><!-- END column -->
