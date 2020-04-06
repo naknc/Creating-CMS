@@ -62,7 +62,7 @@ class Product extends CI_Controller {
                 array(
                     "title"         => $this->input->post("title"),
                     "description"   => $this->input->post("description"),
-                    "url"           => convertToCEO($this->input->post("title")),
+                    "url"           => convertToSEO($this->input->post("title")),
                     "rank"          => 0,
                     "isActive"      => 1,
                     "createdAt"     => date("Y-m-d H:i:s")
@@ -144,7 +144,7 @@ class Product extends CI_Controller {
                 array(
                     "title"         => $this->input->post("title"),
                     "description"   => $this->input->post("description"),
-                    "url"           => convertToCEO($this->input->post("title"))
+                    "url"           => convertToSEO($this->input->post("title"))
                 )
             );
 
@@ -225,6 +225,54 @@ class Product extends CI_Controller {
 
     }
 
+    public function isCoverSetter($id, $parent_id){
+        
+        if($id && $parent_id){
+
+            $isCover = ($this->input->post("data") === "true") ? 1 : 0;
+
+            // Kapak yapılmak istenen kayıt
+            $this->product_image_model->update(
+                array(
+                    "id"         => $id,
+                    "product_id" => $parent_id
+                ),
+                array(
+                    "isCover" => $isCover
+                )
+            );
+
+            // Kapak yapılmayan diğer kayıtlar
+            $this->product_image_model->update(
+                array(
+                    "id !="      => $id,
+                    "product_id" => $parent_id
+                ),
+                array(
+                    "isCover" => 0
+                )
+            );
+
+            $viewData = new stdClass();
+        
+        /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
+        $viewData->viewFolder = $this->viewFolder;
+        $viewData->subViewFolder = "image";
+
+        $viewData->item_images = $this->product_image_model->get_all(
+            array(
+                "product_id" => $parent_id
+            )
+        );
+
+        $render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/image_list_v", $viewData, true);
+
+        echo $render_html;
+
+        }
+
+    }
+
     public function rankSetter(){
     
         $data = $this->input->post("data");
@@ -275,9 +323,12 @@ class Product extends CI_Controller {
 
     public function image_upload($id){
 
-         $config["allowed_types"] = "jpg|jpeg|png";
-         $config["upload_path"] = "uploads/$this->viewFolder/";
+        $file_name = convertToSEO(pathinfo($_FILES["file"]["name"], PATHINFO_FILENAME)) . "." . pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
 
+        $config["allowed_types"] = "jpg|jpeg|png";
+        $config["upload_path"] = "uploads/$this->viewFolder/";
+        $config["file_name"] = $file_name;
+         
         $this->load->library("upload", $config);
 
         $upload = $this->upload->do_upload("file");
@@ -301,5 +352,24 @@ class Product extends CI_Controller {
             echo "işlem başarısız";
         }
 
+    }
+
+    public function refresh_image_list($id){
+
+        $viewData = new stdClass();
+        
+        /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
+        $viewData->viewFolder = $this->viewFolder;
+        $viewData->subViewFolder = "image";
+
+        $viewData->item_images = $this->product_image_model->get_all(
+            array(
+                "product_id" => $id
+            )
+        );
+
+        $render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/image_list_v", $viewData, true);
+
+        echo $render_html;
     }
 }
