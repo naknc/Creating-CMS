@@ -24,7 +24,7 @@
 					<td><?php echo $image->img_url; ?></td>
 					<td class="w100 text-center">
 						<input
-							data-url="<?php echo base_url("product/isActiveSetter")?>"
+							data-url="<?php echo base_url("product/imageIsActiveSetter/$image->id")?>"
 							class="isActive"
 							type="checkbox" 
 							data-switchery 

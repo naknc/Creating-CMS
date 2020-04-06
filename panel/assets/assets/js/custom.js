@@ -24,7 +24,7 @@ $(document).ready(function(){
           });
     })
 
-    $(".isActive").change(function(){
+    $(".content-container, .image_list_container").on('change', '.isActive', function(){
         var $data = $(this).prop("checked");
         var $data_url = $(this).data("url");
 
