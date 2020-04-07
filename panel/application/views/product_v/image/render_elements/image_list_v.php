@@ -27,7 +27,7 @@
 					<td><?php echo $image->img_url; ?></td>
 					<td class="w100 text-center">
 						<input
-							data-url="<?php echo base_url("product/imageIsActiveSetter/$image->id")?>"
+							data-url="<?php echo base_url("product/imageIsActiveSetter/$image->id") ?>"
 							class="isActive"
 							type="checkbox" 
 							data-switchery 
@@ -37,7 +37,7 @@
 					</td>
 					<td class="w100 text-center">
 						<input
-							data-url="<?php echo base_url("product/isCoverSetter/$image->id/$image->product_id")?>"
+							data-url="<?php echo base_url("product/isCoverSetter/$image->id/$image->product_id") ?>"
 							class="isCover"
 							type="checkbox" 
 							data-switchery 
@@ -47,7 +47,7 @@
 					</td>
 					<td class="w100 text-center">
 						<button 
-							data-url="<?php echo "product/delete"; ?>" 
+							data-url="<?php echo base_url("product/imageDelete/$image->id/$image->product_id") ?>" 
 							class="btn btn-sm btn-danger btn-outline btn-block remove-btn">
 							<i class="fa fa-trash"></i> Sil
 						</button>
