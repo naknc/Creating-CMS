@@ -84,7 +84,6 @@
 		"<?php echo base_url("assets");?>/libs/bower/switchery/dist/switchery.min.js",
 		"<?php echo base_url("assets");?>/libs/bower/lightbox2/dist/css/lightbox.min.css",
 		"<?php echo base_url("assets");?>/libs/bower/lightbox2/dist/js/lightbox.min.js",
-		"<?php echo base_url("assets"); ?>/assets/js/iziToast.min.js",
 		"<?php echo base_url("assets"); ?>/assets/js/custom.js"
 	]
 };

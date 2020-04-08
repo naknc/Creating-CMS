@@ -72,13 +72,26 @@ class Product extends CI_Controller {
             //TODO Alert sistemi eklenecek...
             if($insert){
 
-                redirect(base_url("product"));
+                $alert = array(
+                    "title" => "İşlem Başarılı",
+                    "text"=> "Kayıt başarılı bir şekilde eklendi",
+                    "type" => "success"
+                );
 
             } else {
 
-                echo "İşlem başarısızdır...";
+                $alert = array(
+                    "title" => "İşlem Başarısız",
+                    "text"=> "Kayıt ekleme sırasında bir problem oluştu",
+                    "type" => "error"
+                );
 
             }
+
+            //İşlemin Sonucunu Session'a yazma işlemi...
+            $this->session->set_flashdata("alert", $alert);
+
+            redirect(base_url("product"));
 
         } else {
 
@@ -151,13 +164,25 @@ class Product extends CI_Controller {
             //TODO Alert sistemi eklenecek...
             if($update){
 
-                redirect(base_url("product"));
+                $alert = array(
+                    "title" => "İşlem Başarılı",
+                    "text"=> "Kayıt başarılı bir şekilde güncellendi",
+                    "type" => "success"
+                );
 
             } else {
 
-                echo "İşlem başarısızdır...";
+                $alert = array(
+                    "title" => "İşlem Başarısız",
+                    "text"=> "Güncelleme sırasında bir problem oluştu",
+                    "type" => "error"
+                );
 
             }
+
+            $this->session->set_flashdata("alert", $alert);
+
+            redirect(base_url("product"));
 
         } else {
 
@@ -194,16 +219,28 @@ class Product extends CI_Controller {
             )
         );
 
-        //TODO ALERT Sistemi Eklenecek...
+        //TODO Alert sistemi eklenecek...
         if($delete){
 
-            redirect(base_url("product"));
+            $alert = array(
+                "title" => "İşlem Başarılı",
+                "text"=> "Kayıt başarılı bir şekilde silindi",
+                "type" => "success"
+            );
 
-        } else{
+        } else {
 
-            redirect(base_url("product"));
+            $alert = array(
+                "title" => "İşlem Başarısız",
+                "text"=> "Kayıt silme sırasında bir problem oluştu",
+                "type" => "error"
+            );
 
         }
+
+        $this->session->set_flashdata("alert", $alert);
+
+        redirect(base_url("product"));
     }
 
     public function imageDelete($id, $parent_id){
