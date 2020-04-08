@@ -96,7 +96,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)">
+                    <a href="<?php echo base_url("news");?>">
                         <i class="menu-icon fa fa-newspaper-o"></i>
                         <span class="menu-text">Haberler</span>
                     </a>
