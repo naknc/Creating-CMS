@@ -44,6 +44,35 @@ class News extends CI_Controller {
         $this->load->library("form_validation");
 
         //kurallar yazılır..
+        $news_type = $this->input->post("news_type");
+        
+        if($news_type == "image"){
+
+            if($_FILES["img_url"]["name"] == ""){
+                
+                $alert = array(
+                    "title" => "İşlem Başarısız",
+                    "text"=> "Lütfen bir görsel seçiniz",
+                    "type" => "error"
+                );
+
+                //İşlemin Sonucunu Session'a yazma işlemi...
+                $this->session->set_flashdata("alert", $alert);
+
+                redirect(base_url("news/new_form"));
+
+                die();
+            }
+
+
+        } else if($news_type == "video"){
+
+            echo "Video seçildi";
+
+        }
+
+        die();
+
         $this->form_validation->set_rules("title","Başlık","required|trim");
 
         $this->form_validation->set_message(

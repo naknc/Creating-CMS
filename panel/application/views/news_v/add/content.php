@@ -7,7 +7,7 @@
 	<div class="col-md-12">
 	<div class="widget">
 		<div class="widget-body">
-			<form action="<?php echo base_url("news/save");?>" method="post">
+			<form action="<?php echo base_url("news/save");?>" method="post" enctype="multipart/form-data">
 				
 				<div class="form-group">
 					<label>Başlık</label>
