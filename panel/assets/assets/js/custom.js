@@ -1,5 +1,12 @@
 $(document).ready(function(){
 
+
+    iziToast.success({
+        title: 'Hey',
+        message: 'What would you like to add?',
+        position: "topCenter"
+    });
+
     $(".sortable").sortable();
 
     $(".content-container, .image_list_container").on('click', '.remove-btn', function () {
