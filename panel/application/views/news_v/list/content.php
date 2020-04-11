@@ -41,18 +41,20 @@
 								<td>
 									<?php if($item->news_type == "image") { ?>
 										
-										<img width="100" src="<?php echo base_url("uploads/$viewFolder/$item->img_url"); ?>" 
+										<img width="100" 
+										src="<?php echo base_url("uploads/$viewFolder/$item->img_url"); ?>" 
 											alt="" 
 											class="img_rounded">
 
 									<?php } else if($item->news_type == "video") { ?>
 										<iframe 
-										width="100"
+											width="100"
 											src="<?php echo $item->video_url; ?>" 
 											frameborder="0" 
-											allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+											allow="encrypted-media" 
 											allowfullscreen>
 										</iframe>
+										
 									<?php } ?>
 
 								</td>
