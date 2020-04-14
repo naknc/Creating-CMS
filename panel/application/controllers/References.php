@@ -43,30 +43,20 @@ class References extends CI_Controller {
         $this->load->library("form_validation");
 
         //kurallar yazılır..
-        $references_type = $this->input->post("references_type");
-        
-        if($references_type == "image"){
-
-            if($_FILES["img_url"]["name"] == ""){
+         if($_FILES["img_url"]["name"] == ""){
                 
-                $alert = array(
-                    "title" => "İşlem Başarısız",
-                    "text"  => "Lütfen bir görsel seçiniz",
-                    "type"  => "error"
-                );
+             $alert = array(
+                "title" => "İşlem Başarısız",
+                "text"  => "Lütfen bir görsel seçiniz",
+                "type"  => "error"
+            );
 
-                //İşlemin Sonucunu Session'a yazma işlemi...
-                $this->session->set_flashdata("alert", $alert);
+            //İşlemin Sonucunu Session'a yazma işlemi...
+            $this->session->set_flashdata("alert", $alert);
 
-                redirect(base_url("references/new_form"));
+            redirect(base_url("references/new_form"));
 
-                die();
-            }
-
-
-        } else if($references_type == "video"){
-
-            $this->form_validation->set_rules("video_url","Video URL","required|trim");
+            die();
         }
 
         $this->form_validation->set_rules("title","Başlık","required|trim");
@@ -81,9 +71,6 @@ class References extends CI_Controller {
         $validate = $this->form_validation->run();
 
         if($validate){
-
-            
-            if($references_type == "image"){
 
                 //upload süreci...
 
@@ -101,49 +88,18 @@ class References extends CI_Controller {
 
             $uploaded_file = $this->upload->data("file_name");
             
-            $data = array(
+            $data = 
+
+            $insert = $this->reference_model->add(array(
                 "title"         => $this->input->post("title"),
                 "description"   => $this->input->post("description"),
                 "url"           => convertToSEO($this->input->post("title")),
-                "references_type"    => $references_type,
                 "img_url"       => $uploaded_file,
-                "video_url"     => "#",
                 "rank"          => 0,
                 "isActive"      => 1,
                 "createdAt"     => date("Y-m-d H:i:s")
-            ); 
-
-        } else {
-            $alert = array(
-                "title" => "İşlem Başarısız",
-                "text"  => "Görsel yüklenirken bir problem oluştu",
-                "type"  => "error"
+                )
             );
-
-            //İşlemin Sonucunu Session'a yazma işlemi...
-            $this->session->set_flashdata("alert", $alert);
-
-            redirect(base_url("references/new_form"));
-
-            die();
-        }
-
-
-            } else if($references_type == "video"){
-                $data = array(
-                    "title"         => $this->input->post("title"),
-                    "description"   => $this->input->post("description"),
-                    "url"           => convertToSEO($this->input->post("title")),
-                    "references_type"    => $references_type,
-                    "img_url"       => "#",
-                    "video_url"     => $this->input->post("video_url"),
-                    "rank"          => 0,
-                    "isActive"      => 1,
-                    "createdAt"     => date("Y-m-d H:i:s")
-                ); 
-            }
-
-            $insert = $this->reference_model->add($data);
 
             //TODO Alert sistemi eklenecek...
             if($insert){
@@ -161,23 +117,35 @@ class References extends CI_Controller {
                     "text"  => "Kayıt ekleme sırasında bir problem oluştu",
                     "type"  => "error"
                 );
-
             }
 
-            //İşlemin Sonucunu Session'a yazma işlemi...
+        } else {
+            $alert = array(
+                "title" => "İşlem Başarısız",
+                "text"  => "Görsel yüklenirken bir problem oluştu",
+                "type"  => "error"
+            );
+
             $this->session->set_flashdata("alert", $alert);
 
-            redirect(base_url("references"));
+            redirect(base_url("references/newform"));
 
-        } else {
+            die();
 
+        }
+
+        $this->session->set_flashdata("alert", $alert);
+
+        redirect(base_url("references"));
+
+
+    } else {
             $viewData = new stdClass();
         
         /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
         $viewData->viewFolder = $this->viewFolder;
         $viewData->subViewFolder = "add";
         $viewData->form_error = true;
-        $viewData->references_type = $references_type;
 
         $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
 
