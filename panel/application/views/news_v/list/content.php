@@ -37,8 +37,8 @@
 								<td><?php echo $item->title; ?></td>
 								<td><?php echo $item->url; ?></td>
 								<!--<td><?php echo $item->description; ?></td>-->
-								<td><?php echo $item->news_type; ?></td>
-								<td>
+								<td class="text-center"><?php echo $item->news_type; ?></td>
+								<td class="text-center">
 									<?php if($item->news_type == "image") { ?>
 										
 										<img width="75" 
@@ -58,7 +58,7 @@
 									<?php } ?>
 
 								</td>
-								<td>
+								<td class="text-center">
 									<input
 										data-url="<?php echo base_url("news/isActiveSetter/$item->id")?>"
 										class="isActive"
@@ -68,7 +68,7 @@
 										<?php echo ($item->isActive) ? "checked" : ""; ?>
 									/>
 								</td>
-								<td>
+								<td class="text-center">
 									<button 
 										data-url="<?php echo "news/delete/$item->id"; ?>" 
 										class="btn btn-sm btn-danger btn-outline remove-btn">
