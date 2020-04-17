@@ -128,7 +128,7 @@ class References extends CI_Controller {
 
             $this->session->set_flashdata("alert", $alert);
 
-            redirect(base_url("references/newform"));
+            redirect(base_url("references/new_form"));
 
             die();
 

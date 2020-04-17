@@ -54,7 +54,7 @@ class Brands extends CI_Controller {
             //İşlemin Sonucunu Session'a yazma işlemi...
             $this->session->set_flashdata("alert", $alert);
 
-            redirect(base_url("references/new_form"));
+            redirect(base_url("brands/new_form"));
 
             die();
         }
@@ -84,22 +84,20 @@ class Brands extends CI_Controller {
 
             $upload = $this->upload->do_upload("img_url");
 
-        if($upload){
+            if($upload){
 
-            $uploaded_file = $this->upload->data("file_name");
-            
-            $data = 
+                $uploaded_file = $this->upload->data("file_name");
+                
+                $data = 
 
-            $insert = $this->brand_model->add(array(
-                "title"         => $this->input->post("title"),
-                "description"   => $this->input->post("description"),
-                "url"           => convertToSEO($this->input->post("title")),
-                "img_url"       => $uploaded_file,
-                "rank"          => 0,
-                "isActive"      => 1,
-                "createdAt"     => date("Y-m-d H:i:s")
-                )
-            );
+                $insert = $this->brand_model->add(array(
+                    "title"         => $this->input->post("title"),
+                    "img_url"       => $uploaded_file,
+                    "rank"          => 0,
+                    "isActive"      => 1,
+                    "createdAt"     => date("Y-m-d H:i:s")
+                    )
+                );
 
             //TODO Alert sistemi eklenecek...
             if($insert){
@@ -128,7 +126,7 @@ class Brands extends CI_Controller {
 
             $this->session->set_flashdata("alert", $alert);
 
-            redirect(base_url("references/newform"));
+            redirect(base_url("brands/new_form"));
 
             die();
 
@@ -136,7 +134,7 @@ class Brands extends CI_Controller {
 
         $this->session->set_flashdata("alert", $alert);
 
-        redirect(base_url("references"));
+        redirect(base_url("brands"));
 
 
     } else {
