@@ -311,7 +311,7 @@ class References extends CI_Controller {
 
         $this->session->set_flashdata("alert", $alert);
 
-        redirect(base_url("product"));
+        redirect(base_url("references"));
     }
 
     public function isActiveSetter($id){

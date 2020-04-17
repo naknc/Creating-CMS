@@ -367,7 +367,7 @@ class News extends CI_Controller {
 
         $this->session->set_flashdata("alert", $alert);
 
-        redirect(base_url("product"));
+        redirect(base_url("news"));
     }
 
     public function isActiveSetter($id){
