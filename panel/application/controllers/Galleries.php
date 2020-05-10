@@ -46,25 +46,56 @@ class Galleries extends CI_Controller {
         $this->load->library("form_validation");
 
         //kurallar yazılır..
-        $this->form_validation->set_rules("title","Başlık","required|trim");
+        $this->form_validation->set_rules("title","Galeri Adı","required|trim");
 
         $this->form_validation->set_message(
             array(
                 "required" => "<b> {field} </b> alanı doldurulmalıdır"
             )
         );
-
-        //Form validation çalıştırılır
-        //TRUE - FALSE
+        
         $validate = $this->form_validation->run();
 
         if($validate){
 
+            $gallery_type = $this->input->post("gallery_type");
+            $path         = "uploads/$this->viewFolder/";
+            $folder_name  = "";
+
+            if($gallery_type == "image"){
+                
+                $folder_name  = convertToSEO($this->input->post("title"));
+                $path         = "$path/images/$folder_name";
+
+            } else if($gallery_type == "file"){
+
+                $folder_name  = convertToSEO($this->input->post("title"));
+                $path         = "$path/files/$folder_name";
+
+            } 
+
+            if($gallery_type != "video"){
+                if(!mkdir($path, 0755)){
+                    $alert = array(
+                        "title" => "İşlem Başarısız",
+                        "text"  => "Galeri üretilirken problem oluştu. (Yetki Hatası)",
+                        "type"  => "error"
+                    );
+
+                    //İşlemin Sonucunu Session'a yazma işlemi...
+                    $this->session->set_flashdata("alert", $alert);
+
+                    redirect(base_url("galleries"));
+
+                }
+            }
+            
             $insert = $this->gallery_model->add(
                 array(
                     "title"         => $this->input->post("title"),
-                    "description"   => $this->input->post("description"),
+                    "gallery_type"  => $this->input->post("gallery_type"),
                     "url"           => convertToSEO($this->input->post("title")),
+                    "folder_name"   => $folder_name,
                     "rank"          => 0,
                     "isActive"      => 1,
                     "createdAt"     => date("Y-m-d H:i:s")
@@ -93,7 +124,7 @@ class Galleries extends CI_Controller {
             //İşlemin Sonucunu Session'a yazma işlemi...
             $this->session->set_flashdata("alert", $alert);
 
-            redirect(base_url("product"));
+            redirect(base_url("galleries"));
 
         } else {
 

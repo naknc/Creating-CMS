@@ -33,7 +33,7 @@
 							<tr id="ord-<?php echo $item->id; ?>">
 								<td class="order"><i class="fa fa-reorder"></i></td>
 								<td class="w50 text-center">#<?php echo $item->id; ?></td>
-								<td><?php echo $item->gallery_name; ?></td>
+								<td><?php echo $item->title; ?></td>
 								<td><?php echo $item->gallery_type; ?></td>
 								<td><?php echo $item->folder_name; ?></td>
 								<td><?php echo $item->url; ?></td>
