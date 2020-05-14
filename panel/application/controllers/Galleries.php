@@ -280,34 +280,68 @@ class Galleries extends CI_Controller {
     }
 
     public function delete($id){
-        $delete = $this->gallery_model->delete(
+
+        $gallery = $this->gallery_model->get(
             array(
                 "id" => $id
             )
         );
 
-        //TODO Alert sistemi eklenecek...
-        if($delete){
+        if($gallery){
 
-            $alert = array(
-                "title" => "İşlem Başarılı",
-                "text"=> "Kayıt başarılı bir şekilde silindi",
-                "type" => "success"
+
+            if($gallery->gallery_type != "video"){
+
+                if($gallery->gallery_type == "image")
+                    $path = "uploads/$this->viewFolder/images/$gallery->folder_name";
+                    
+                else if($gallery->gallery_type == "file")
+                    $path = "uploads/$this->viewFolder/files/$gallery->folder_name";
+                
+                $delete_folder = rmdir($path);
+
+                if(!$delete_folder){
+                    $alert = array(
+                        "title" => "İşlem Başarısız",
+                        "text"=> "Kayıt silme sırasında bir problem oluştu",
+                        "type" => "error"
+                    );
+
+                    $this->session->set_flashdata("alert", $alert);
+    
+                    redirect(base_url("galleries"));
+
+                    die();
+                }
+                
+            }
+
+            $delete = $this->gallery_model->delete(
+                array(
+                    "id" => $id
+                )
             );
-
-        } else {
-
-            $alert = array(
-                "title" => "İşlem Başarısız",
-                "text"=> "Kayıt silme sırasında bir problem oluştu",
-                "type" => "error"
-            );
-
-        }
-
-        $this->session->set_flashdata("alert", $alert);
-
-        redirect(base_url("product"));
+    
+            //TODO Alert sistemi eklenecek...
+            if($delete){
+    
+                $alert = array(
+                    "title" => "İşlem Başarılı",
+                    "text"=> "Kayıt başarılı bir şekilde silindi",
+                    "type" => "success"
+                );
+    
+            } else {
+                $alert = array(
+                    "title" => "İşlem Başarısız",
+                    "text"=> "Kayıt silme sırasında bir problem oluştu",
+                    "type" => "error"
+                );
+            }
+            $this->session->set_flashdata("alert", $alert);
+    
+            redirect(base_url("galleries"));
+        } 
     }
 
     public function imageDelete($id, $parent_id){
