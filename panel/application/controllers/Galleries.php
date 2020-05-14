@@ -294,7 +294,7 @@ class Galleries extends CI_Controller {
 
                 if($gallery->gallery_type == "image")
                     $path = "uploads/$this->viewFolder/images/$gallery->folder_name";
-                    
+
                 else if($gallery->gallery_type == "file")
                     $path = "uploads/$this->viewFolder/files/$gallery->folder_name";
                 
@@ -336,7 +336,7 @@ class Galleries extends CI_Controller {
                     "title" => "İşlem Başarısız",
                     "text"=> "Kayıt silme sırasında bir problem oluştu",
                     "type" => "error"
-                );
+                ); 
             }
             $this->session->set_flashdata("alert", $alert);
     
