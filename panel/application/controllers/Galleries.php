@@ -86,6 +86,7 @@ class Galleries extends CI_Controller {
                     $this->session->set_flashdata("alert", $alert);
 
                     redirect(base_url("galleries"));
+                    die();
 
                 }
             }
@@ -165,11 +166,11 @@ class Galleries extends CI_Controller {
 
     }
 
-    public function update($id){
+    public function update($id, $gallery_type, $oldFolderName = ""){
         $this->load->library("form_validation");
 
         //kurallar yazılır..
-        $this->form_validation->set_rules("title","Başlık","required|trim");
+        $this->form_validation->set_rules("title","Galeri Adı","required|trim");
 
         $this->form_validation->set_message(
             array(
@@ -183,13 +184,46 @@ class Galleries extends CI_Controller {
 
         if($validate){
 
+            $path         = "uploads/$this->viewFolder/";
+            $folder_name  = "";
+
+            if($gallery_type == "image"){
+                
+                $folder_name  = convertToSEO($this->input->post("title"));
+                $path         = "$path/images";
+
+            } else if($gallery_type == "file"){
+
+                $folder_name  = convertToSEO($this->input->post("title"));
+                $path         = "$path/files";
+
+            } 
+
+            if($gallery_type != "video"){
+                if(!rename("$path/$oldFolderName", "$path/$folder_name")){
+                    $alert = array(
+                        "title" => "İşlem Başarısız",
+                        "text"  => "Galeri üretilirken problem oluştu. (Yetki Hatası)",
+                        "type"  => "error"
+                    );
+
+                    //İşlemin Sonucunu Session'a yazma işlemi...
+                    $this->session->set_flashdata("alert", $alert);
+
+                    redirect(base_url("galleries"));
+                    die();
+
+                }
+            }
+
+
             $update = $this->gallery_model->update(
                 array(
                     "id" => $id
                 ),
                 array(
                     "title"         => $this->input->post("title"),
-                    "description"   => $this->input->post("description"),
+                    "folder_name"   => $folder_name,
                     "url"           => convertToSEO($this->input->post("title"))
                 )
             );
@@ -215,7 +249,7 @@ class Galleries extends CI_Controller {
 
             $this->session->set_flashdata("alert", $alert);
 
-            redirect(base_url("product"));
+            redirect(base_url("galleries"));
 
         } else {
 
@@ -454,10 +488,7 @@ class Galleries extends CI_Controller {
                 "product_id" => $id
             ),  "rank ASC"
         );
-
-        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
-       
-
+    $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
     }
 
     public function image_upload($id){
