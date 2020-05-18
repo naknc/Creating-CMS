@@ -63,7 +63,7 @@
 									?>
 
 									<a href="<?php echo "galleries/update_form/$item->id"; ?>" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil-square-o"></i> Düzenle</a>
-									<a href="<?php echo "galleries/image_form/$item->id"; ?>" class="btn btn-sm btn-dark btn-outline"><i class="fa <?php echo $button_icon?>"></i> Galeriye Gözat</a>
+									<a href="<?php echo "galleries/upload_form/$item->id"; ?>" class="btn btn-sm btn-dark btn-outline"><i class="fa <?php echo $button_icon?>"></i> Galeriye Gözat</a>
 								</td>
 							</tr>
 
