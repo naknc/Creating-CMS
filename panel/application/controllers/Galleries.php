@@ -533,6 +533,7 @@ class Galleries extends CI_Controller {
                     "gallery_id" => $id
                 ),  "rank ASC"
             );
+
             }else{
             $viewData->items = $this->video_model->get_all(
                 array(
@@ -540,6 +541,8 @@ class Galleries extends CI_Controller {
                 ),  "rank ASC"
             );
         }
+
+        $viewData->gallery_type = $item->gallery_type;
     
         $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
     }
@@ -548,7 +551,7 @@ class Galleries extends CI_Controller {
 
         $file_name = convertToSEO(pathinfo($_FILES["file"]["name"], PATHINFO_FILENAME)) . "." . pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
 
-        $config["allowed_types"]    = "jpg|jpeg|png";
+        $config["allowed_types"]    = "jpg|jpeg|png|pdf|doc|docx|txt";
         $config["upload_path"]      = ($gallery_type == "image") ? "uploads/$this->viewFolder/images/$folderName/" : "uploads/$this->viewFolder/files/$folderName/";
         $config["file_name"]        = $file_name;
          
