@@ -581,7 +581,7 @@ class Galleries extends CI_Controller {
 
     }
 
-    public function refresh_file_list($id){
+    public function refresh_file_list($gallery_id, $gallery_type){
 
         $viewData = new stdClass();
         
@@ -589,13 +589,17 @@ class Galleries extends CI_Controller {
         $viewData->viewFolder = $this->viewFolder;
         $viewData->subViewFolder = "image";
 
-        $viewData->item_images = $this->product_image_model->get_all(
+        $modelName = ($gallery_type == "image") ? "image_model" : "file_model";
+
+        $viewData->items = $this->$modelName->get_all(
             array(
-                "product_id" => $id
+                "gallery_id" => $gallery_id
             )
         );
 
-        $render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/image_list_v", $viewData, true);
+        $viewData->gallery_type = $gallery_type;
+
+        $render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/file_list_v", $viewData, true);
 
         echo $render_html;
     }
