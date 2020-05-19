@@ -344,15 +344,17 @@ class Galleries extends CI_Controller {
         } 
     }
 
-    public function imageDelete($id, $parent_id){
+    public function fileDelete($id, $parent_id, $gallery_type){
 
-        $fileName = $this->product_image_model->get(
+        $modelName = ($gallery_type == "image") ? "image_model" : "file_model";
+
+        $fileName = $this->$modelName->get(
             array(
                 "id" => $id
             )
         );  
 
-        $delete = $this->product_image_model->delete(
+        $delete = $this->$modelName->delete(
             array(
                 "id" => $id
             )
@@ -361,13 +363,13 @@ class Galleries extends CI_Controller {
         //TODO ALERT Sistemi Eklenecek...
         if($delete){
 
-            unlink("uploads/{$this->viewFolder}/$fileName->img_url");
+            unlink($fileName->url);
 
-            redirect(base_url("product/image_form/$parent_id"));
+            redirect(base_url("galleries/upload_form/$parent_id"));
 
         } else{
 
-            redirect(base_url("product/image_form/$parent_id"));
+            redirect(base_url("galleries/upload_form/$parent_id"));
 
         }
     }
@@ -391,13 +393,15 @@ class Galleries extends CI_Controller {
 
     }
 
-    public function imageIsActiveSetter($id){
+    public function fileIsActiveSetter($id, $gallery_type){
         
-        if($id){
+        if($id && $gallery_type){
+
+            $modelName = ($gallery_type == "image") ? "image_model" : "file_model";
 
             $isActive = ($this->input->post("data") === "true") ? 1 : 0;
 
-            $this->product_image_model->update(
+            $this->$modelName->update(
                 array(
                     "id" => $id
                 ),
@@ -405,54 +409,6 @@ class Galleries extends CI_Controller {
                     "isActive" => $isActive
                 )
             );
-
-        }
-
-    }
-
-    public function isCoverSetter($id, $parent_id){
-        
-        if($id && $parent_id){
-
-            $isCover = ($this->input->post("data") === "true") ? 1 : 0;
-
-            // Kapak yapılmak istenen kayıt
-            $this->product_image_model->update(
-                array(
-                    "id"         => $id,
-                    "product_id" => $parent_id
-                ),
-                array(
-                    "isCover" => $isCover
-                )
-            );
-
-            // Kapak yapılmayan diğer kayıtlar
-            $this->product_image_model->update(
-                array(
-                    "id !="      => $id,
-                    "product_id" => $parent_id
-                ),
-                array(
-                    "isCover" => 0
-                )
-            );
-
-            $viewData = new stdClass();
-        
-        /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
-        $viewData->viewFolder = $this->viewFolder;
-        $viewData->subViewFolder = "image";
-
-        $viewData->item_images = $this->product_image_model->get_all(
-            array(
-                "product_id" => $parent_id
-            ),  "rank ASC"
-        );
-
-        $render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/image_list_v", $viewData, true);
-
-        echo $render_html;
 
         }
 
@@ -481,7 +437,7 @@ class Galleries extends CI_Controller {
         }
     }
 
-    public function imageRankSetter(){
+    public function fileRankSetter($gallery_type){
     
         $data = $this->input->post("data");
 
@@ -489,9 +445,11 @@ class Galleries extends CI_Controller {
         
         $items = $order["ord"];
 
+        $modelName = ($gallery_type == "image") ? "image_model" : "file_model";
+
         foreach($items as $rank => $id){
 
-            $this->product_image_model->update(
+            $this->$modelName->update(
                 array(
                     "id"        => $id,
                     "rank !="   => $rank
