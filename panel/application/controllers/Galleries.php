@@ -414,6 +414,8 @@ class Galleries extends CI_Controller {
 
     }
 
+    /*galeri elemanları için kullanılan metotlar */
+
     public function rankSetter(){
     
         $data = $this->input->post("data");
@@ -560,5 +562,24 @@ class Galleries extends CI_Controller {
         $render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/file_list_v", $viewData, true);
 
         echo $render_html;
+    }
+    /*video galeri için kullanılan metotlar */
+
+    public function gallery_video_list($id){
+        $viewData = new stdClass();
+
+        /**Tablodan Verilerin Getirilmesi.. */
+        $items = $this->video_model->get_all(
+            array(
+                "gallery_id" => $id
+            ), "rank ASC"
+        );
+
+        /**View'e gönderilecek değişkenlerin set edilmesi..*/
+        $viewData->viewFolder = $this->viewFolder;
+        $viewData->subViewFolder = "video/list";
+        $viewData->items = $items;
+
+        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
     }
 }
