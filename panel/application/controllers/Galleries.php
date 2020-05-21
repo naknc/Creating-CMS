@@ -768,4 +768,79 @@ class Galleries extends CI_Controller
 
     }
     
+    public function rankGalleryVideoSetter(){
+
+
+        $data = $this->input->post("data");
+
+        parse_str($data, $order);
+
+        $items = $order["ord"];
+
+        foreach ($items as $rank => $id){
+
+            $this->video_model->update(
+                array(
+                    "id"        => $id,
+                    "rank !="   => $rank
+                ),
+                array(
+                    "rank"      => $rank
+                )
+            );
+
+        }
+
+    }
+
+    public function galleryVideoIsActiveSetter($id){
+
+        if($id){
+
+            $isActive = ($this->input->post("data") === "true") ? 1 : 0;
+
+            $this->video_model->update(
+                array(
+                    "id"    => $id
+                ),
+                array(
+                    "isActive"  => $isActive
+                )
+            );
+        }
+    }
+
+    public function galleryVideoDelete($id, $gallery_id){
+
+            $delete = $this->video_model->delete(
+                array(
+                    "id"    => $id
+                )
+            );
+
+            // TODO Alert Sistemi Eklenecek...
+            if($delete){
+
+                $alert = array(
+                    "title" => "İşlem Başarılı",
+                    "text" => "Kayıt başarılı bir şekilde silindi",
+                    "type"  => "success"
+                );
+
+            } else {
+
+                $alert = array(
+                    "title" => "İşlem Başarısız",
+                    "text" => "Kayıt silme sırasında bir problem oluştu",
+                    "type"  => "error"
+                );
+
+            }
+
+            $this->session->set_flashdata("alert", $alert);
+            redirect(base_url("galleries/gallery_video_list/$gallery_id"));
+
+        
+    }
+    
 }
