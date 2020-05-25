@@ -58,17 +58,16 @@ class Users extends CI_Controller {
                 "min_length"  => "Şifre en az 6 karakter olmalıdır.",
                 "max_length"  => "Şifre 8 karakterden fazla olamaz."
 
-            )
-        );
+            ));
 
-        //Form validation çalıştırılır
-        $validate = $this->form_validation->run();
+            //Form validation çalıştırılır
+            $validate = $this->form_validation->run();
 
-        if($validate){
+            if($validate){
 
                 //upload süreci...
 
-            $insert = $this->user_model->add(array(
+                $insert = $this->user_model->add(array(
                 "user_name" => $this->input->post("user_name"),
                 "full_name" => $this->input->post("full_name"),
                 "email"     => $this->input->post("email"),
@@ -85,9 +84,7 @@ class Users extends CI_Controller {
                     "title" => "İşlem Başarılı",
                     "text"  => "Kayıt başarılı bir şekilde eklendi",
                     "type"  => "success"
-                );
-
-            } else {
+                ); } else {
 
                 $alert = array(
                     "title" => "İşlem Başarısız",
@@ -95,27 +92,22 @@ class Users extends CI_Controller {
                     "type"  => "error"
                 );
             }
-
-        
-
-        $this->session->set_flashdata("alert", $alert);
-
-        redirect(base_url("users"));
-
-        die();
-
-    } else {
-            $viewData = new stdClass();
             
-            /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
-            $viewData->viewFolder = $this->viewFolder;
-            $viewData->subViewFolder = "add";
-            $viewData->form_error = true;
+            $this->session->set_flashdata("alert", $alert);
 
-            $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+            redirect(base_url("users"));
 
-        }
-        
+            die();} else {
+                $viewData = new stdClass();
+            
+                /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
+                $viewData->viewFolder = $this->viewFolder;
+                $viewData->subViewFolder = "add";
+                $viewData->form_error = true;
+
+                $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+
+            } 
     }
 
     public function update_form($id){
