@@ -22,10 +22,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |	https://codeigniter.com/user_guide/general/routing.html
 |
 | -------------------------------------------------------------------------
-| RESERVED ROUTES
+| RESERVED 
 | -------------------------------------------------------------------------
 |
-| There are three reserved routes:
+| There are three reserved :
 |
 |	$route['default_controller'] = 'welcome';
 |
@@ -52,3 +52,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'dashboard';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+$route["login"] = "userop/login";
