@@ -43,13 +43,14 @@
 										<?php echo ($item->isActive) ? "checked" : ""; ?>
 									/>
 								</td>
-								<td class="text-center w200">
+								<td class="text-center w300">
 									<button 
 										data-url="<?php echo "users/delete/$item->id"; ?>" 
 										class="btn btn-sm btn-danger btn-outline remove-btn">
 										<i class="fa fa-trash"></i> Sil
 									</button>
 									<a href="<?php echo "users/update_form/$item->id"; ?>" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil-square-o"></i> Düzenle</a>
+									<a href="<?php echo "users/update_password_form/$item->id"; ?>" class="btn btn-sm btn-purple btn-outline"><i class="fa fa-key"></i> Şifre Değiştir</a>
 								</td>
 							</tr>
 

@@ -130,6 +130,26 @@ class Users extends CI_Controller {
 
     }
 
+    public function update_password_form($id){
+
+        $viewData = new stdClass();
+
+        /**Tablodan Verilerin Getirilmesi.. */
+        $item = $this->user_model->get(
+            array(
+                "id"        => $id,
+            )
+        );
+
+        /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
+        $viewData->viewFolder = $this->viewFolder;
+        $viewData->subViewFolder = "password";
+        $viewData->item = $item;
+
+        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+
+    }
+
     public function update($id){
 
         $this->load->library("form_validation");
@@ -209,6 +229,79 @@ class Users extends CI_Controller {
             $viewData->item = $this->user_model->get(
                 array(
                     "id"        => $id
+                )
+            );
+        
+
+            $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+        }
+        
+    }
+
+    public function update_password($id){
+
+        $this->load->library("form_validation");
+
+        $this->form_validation->set_rules("password","Şifre","required|trim|min_length[6]|max_length[8]");
+        $this->form_validation->set_rules("re_password","Şifre Tekrar","required|trim|min_length[6]|max_length[8]|matches[password]");
+
+        $this->form_validation->set_message(
+            array(
+                "required"    => "<b> {field} </b> alanı doldurulmalıdır",
+                "matches"   => "Şifreler birbirini tutmuyor",
+            )
+        );
+        
+        //Form validation çalıştırılır
+        $validate = $this->form_validation->run();
+
+        if($validate){
+            
+            //upload süreci...
+
+            $update = $this->user_model->update(
+                array("id" => $id ), 
+                array(
+                    "password" => md5($this->input->post("password")),
+                    )
+                );
+
+            //TODO Alert sistemi eklenecek...
+            if($update){
+
+                $alert = array(
+                    "title" => "İşlem Başarılı",
+                    "text"  => "Şifreniz başarılı bir şekilde güncellendi",
+                    "type"  => "success"
+                );
+
+            } else {
+
+                $alert = array(
+                    "title" => "İşlem Başarısız",
+                    "text"  => "Şifre güncelleme sırasında bir problem oluştu",
+                    "type"  => "error"
+                );
+
+            }
+
+            //İşlemin Sonucunu Session'a yazma işlemi...
+            $this->session->set_flashdata("alert", $alert);
+
+            redirect(base_url("users"));
+
+        } else {
+            $viewData = new stdClass();
+        
+            /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
+            $viewData->viewFolder = $this->viewFolder;
+            $viewData->subViewFolder = "password";
+            $viewData->form_error = true;
+
+            /**Tablodan Verilerin Getirilmesi.. */
+            $viewData->item = $this->user_model->get(
+                array(
+                    "id"        => $id,
                 )
             );
         
