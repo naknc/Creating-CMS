@@ -339,7 +339,7 @@ class Users extends CI_Controller {
 
         $this->session->set_flashdata("alert", $alert);
 
-        redirect(base_url("references"));
+        redirect(base_url("users"));
     }
 
     public function isActiveSetter($id){
