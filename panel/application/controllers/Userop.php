@@ -68,6 +68,7 @@ class Userop extends CI_Controller {
                     array(
                         "email"     => $this->input->post("user_email"),
                         "password"  => md5($this->input->post("user_password")),
+                        "isActive"  => 1
                     )
                 );
                 if($user){
