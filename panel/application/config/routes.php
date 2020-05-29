@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
-| URI ROUTING
+| URI TING
 | -------------------------------------------------------------------------
 | This file lets you re-map URI requests to specific controller functions.
 |
@@ -19,7 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 | Please see the user guide for complete details:
 |
-|	https://codeigniter.com/user_guide/general/routing.html
+|	https://codeigniter.com/user_guide/general/ing.html
 |
 | -------------------------------------------------------------------------
 | RESERVED 
@@ -27,20 +27,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 | There are three reserved :
 |
-|	$route['default_controller'] = 'welcome';
+|	$e['default_controller'] = 'welcome';
 |
-| This route indicates which controller class should be loaded if the
+| This e indicates which controller class should be loaded if the
 | URI contains no data. In the above example, the "welcome" class
 | would be loaded.
 |
-|	$route['404_override'] = 'errors/page_missing';
+|	$e['404_override'] = 'errors/page_missing';
 |
-| This route will tell the Router which controller/method to use if those
-| provided in the URL cannot be matched to a valid route.
+| This e will tell the ter which controller/method to use if those
+| provided in the URL cannot be matched to a valid e.
 |
-|	$route['translate_uri_dashes'] = FALSE;
+|	$e['translate_uri_dashes'] = FALSE;
 |
-| This is not exactly a route, but allows you to automatically route
+| This is not exactly a e, but allows you to automatically e
 | controller and method names that contain dashes. '-' isn't a valid
 | class or method name character, so it requires translation.
 | When you set this option to TRUE, it will replace ALL dashes in the
@@ -54,3 +54,4 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route["login"] = "userop/login";
+$route["logout"] = "userop/logout";
