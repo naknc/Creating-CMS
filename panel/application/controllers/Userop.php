@@ -13,6 +13,11 @@ class Userop extends CI_Controller {
     }
 
     public function login(){
+
+        if(get_active_user()){
+            redirect(base_url());
+        }
+
         $viewData = new stdClass();
 
         /**View'e gönderilecek değişkenlerin set edilmesi..*/
@@ -23,6 +28,11 @@ class Userop extends CI_Controller {
     }
 
     public function do_login(){
+        
+        if(get_active_user()){
+            redirect(base_url());
+        }
+
         $this->load->library("form_validation");
 
         //kurallar yazılır..
