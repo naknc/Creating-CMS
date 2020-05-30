@@ -136,4 +136,24 @@ class Userop extends CI_Controller {
             echo $this->email->print_debugger();
         }
     }
+
+    public function forget_password(){
+
+        if(get_active_user()){
+            redirect(base_url());
+        }
+
+        $viewData = new stdClass();
+
+        /**View'e gönderilecek değişkenlerin set edilmesi..*/
+        $viewData->viewFolder = $this->viewFolder;
+        $viewData->subViewFolder = "forget_password";
+
+        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+    }
+
+    public function reset_password(){
+
+       echo "reset pass";
+    }
 }
