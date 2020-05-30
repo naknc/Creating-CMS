@@ -72,14 +72,14 @@ class Emailsettings extends CI_Controller {
 
                 $insert = $this->emailsettings_model->add(
                     array(
-                        "protocol" => $this->input->post("user_name"),
+                        "protocol" => $this->input->post("protocol"),
                         "host" => $this->input->post("host"),
                         "port" => $this->input->post("port"),
                         "user_name" => $this->input->post("user_name"),
                         "user" => $this->input->post("user"),
                         "from" => $this->input->post("from"),
                         "to" => $this->input->post("to"),
-                        "password"  => $this->input->post("password"),
+                        "password"  => md5($this->input->post("password")),
                         "isActive"  => 1,
                         "createdAt" => date("Y-m-d H:i:s")
                 )
@@ -137,50 +137,23 @@ class Emailsettings extends CI_Controller {
 
     }
 
-    public function update_password_form($id){
-
-        $viewData = new stdClass();
-
-        /**Tablodan Verilerin Getirilmesi.. */
-        $item = $this->emailsettings_model->get(
-            array(
-                "id"        => $id,
-            )
-        );
-
-        /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
-        $viewData->viewFolder = $this->viewFolder;
-        $viewData->subViewFolder = "password";
-        $viewData->item = $item;
-
-        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
-
-    }
-
     public function update($id){
 
         $this->load->library("form_validation");
 
-        $oldUser = $this->emailsettings_model->get (
-                array(
-                    "id" => $id
-                )
-            );
-
-        if($oldUser->user_name != $this->input->post("user_name")){
-            $this->form_validation->set_rules("user_name","Kullanıcı Adı","required|trim|is_unique[users.user_name]");
-        }
-        if($oldUser->email != $this->input->post("email")){
-            $this->form_validation->set_rules("email","E-posta","required|trim|valid_email|is_unique[users.email]");
-        }
-        
-        $this->form_validation->set_rules("full_name","Ad Soyad","required|trim");
+        $this->form_validation->set_rules("protocol","Protokol Numarası","required|trim");
+        $this->form_validation->set_rules("host","E-posta Sunucusu","required|trim");
+        $this->form_validation->set_rules("port","Port Numarası","required|trim");
+        $this->form_validation->set_rules("user_name","Kullanıcı Adı","required|trim");
+        $this->form_validation->set_rules("user","E-posta (user)","required|trim|valid_email");
+        $this->form_validation->set_rules("from","Kimden Gidercek (from)","required|trim|valid_email");
+        $this->form_validation->set_rules("to","Kime Gidecek (to)","required|trim|valid_email");
+        $this->form_validation->set_rules("password","Şifre","required|trim");
 
         $this->form_validation->set_message(
             array(
                 "required"    => "<b> {field} </b> alanı doldurulmalıdır",
                 "valid_email" => "Lütfen geçeril bir e-posta adresi giriniz.",
-                "is_unique"   => "<b>{field}</b> alanı daha önceden kullanılmış.",
             )
         );
         
@@ -194,10 +167,15 @@ class Emailsettings extends CI_Controller {
             $update = $this->emailsettings_model->update(
                 array("id" => $id ), 
                 array(
+                    "protocol" => $this->input->post("protocol"),
+                    "host" => $this->input->post("host"),
+                    "port" => $this->input->post("port"),
                     "user_name" => $this->input->post("user_name"),
-                    "full_name" => $this->input->post("full_name"),
-                    "email"     => $this->input->post("email")
-                    )
+                    "user" => $this->input->post("user"),
+                    "from" => $this->input->post("from"),
+                    "to" => $this->input->post("to"),
+                    "password"  => md5($this->input->post("password")),
+            )
                 );
 
             //TODO Alert sistemi eklenecek...
@@ -236,79 +214,6 @@ class Emailsettings extends CI_Controller {
             $viewData->item = $this->emailsettings_model->get(
                 array(
                     "id"        => $id
-                )
-            );
-        
-
-            $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
-        }
-        
-    }
-
-    public function update_password($id){
-
-        $this->load->library("form_validation");
-
-        $this->form_validation->set_rules("password","Şifre","required|trim|min_length[6]|max_length[8]");
-        $this->form_validation->set_rules("re_password","Şifre Tekrar","required|trim|min_length[6]|max_length[8]|matches[password]");
-
-        $this->form_validation->set_message(
-            array(
-                "required"    => "<b> {field} </b> alanı doldurulmalıdır",
-                "matches"   => "Şifreler birbirini tutmuyor",
-            )
-        );
-        
-        //Form validation çalıştırılır
-        $validate = $this->form_validation->run();
-
-        if($validate){
-            
-            //upload süreci...
-
-            $update = $this->emailsettings_model->update(
-                array("id" => $id ), 
-                array(
-                    "password" => md5($this->input->post("password")),
-                    )
-                );
-
-            //TODO Alert sistemi eklenecek...
-            if($update){
-
-                $alert = array(
-                    "title" => "İşlem Başarılı",
-                    "text"  => "Şifreniz başarılı bir şekilde güncellendi",
-                    "type"  => "success"
-                );
-
-            } else {
-
-                $alert = array(
-                    "title" => "İşlem Başarısız",
-                    "text"  => "Şifre güncelleme sırasında bir problem oluştu",
-                    "type"  => "error"
-                );
-
-            }
-
-            //İşlemin Sonucunu Session'a yazma işlemi...
-            $this->session->set_flashdata("alert", $alert);
-
-            redirect(base_url("emailsettings"));
-
-        } else {
-            $viewData = new stdClass();
-        
-            /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
-            $viewData->viewFolder = $this->viewFolder;
-            $viewData->subViewFolder = "password";
-            $viewData->form_error = true;
-
-            /**Tablodan Verilerin Getirilmesi.. */
-            $viewData->item = $this->emailsettings_model->get(
-                array(
-                    "id"        => $id,
                 )
             );
         
@@ -366,96 +271,6 @@ class Emailsettings extends CI_Controller {
 
         }
 
-    }
-
-    public function imageIsActiveSetter($id){
-        
-        if($id){
-
-            $isActive = ($this->input->post("data") === "true") ? 1 : 0;
-
-            $this->product_image_model->update(
-                array(
-                    "id" => $id
-                ),
-                array(
-                    "isActive" => $isActive
-                )
-            );
-
-        }
-
-    }
-
-    public function isCoverSetter($id, $parent_id){
-        
-        if($id && $parent_id){
-
-            $isCover = ($this->input->post("data") === "true") ? 1 : 0;
-
-            // Kapak yapılmak istenen kayıt
-            $this->product_image_model->update(
-                array(
-                    "id"         => $id,
-                    "product_id" => $parent_id
-                ),
-                array(
-                    "isCover" => $isCover
-                )
-            );
-
-            // Kapak yapılmayan diğer kayıtlar
-            $this->product_image_model->update(
-                array(
-                    "id !="      => $id,
-                    "product_id" => $parent_id
-                ),
-                array(
-                    "isCover" => 0
-                )
-            );
-
-            $viewData = new stdClass();
-        
-        /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
-        $viewData->viewFolder = $this->viewFolder;
-        $viewData->subViewFolder = "image";
-
-        $viewData->item_images = $this->product_image_model->get_all(
-            array(
-                "product_id" => $parent_id
-            ),  "rank ASC"
-        );
-
-        $render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/image_list_v", $viewData, true);
-
-        echo $render_html;
-
-        }
-
-    }
-
-    public function rankSetter(){
-    
-        $data = $this->input->post("data");
-
-        parse_str($data, $order);
-        
-        $items = $order["ord"];
-
-        foreach($items as $rank => $id){
-
-            $this->emailsettings_model->update(
-                array(
-                    "id"        => $id,
-                    "rank !="   => $rank
-                ),
-                array(
-                    "rank"      => $rank
-                )
-            );
-
-        }
     }
 
 }
