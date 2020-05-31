@@ -246,8 +246,8 @@ class Users extends CI_Controller {
 
         $this->load->library("form_validation");
 
-        $this->form_validation->set_rules("password","Şifre","required|trim|min_length[6]|max_length[8]");
-        $this->form_validation->set_rules("re_password","Şifre Tekrar","required|trim|min_length[6]|max_length[8]|matches[password]");
+        $this->form_validation->set_rules("password","Şifre","required|trim|min_length[6]|max_length[11]");
+        $this->form_validation->set_rules("re_password","Şifre Tekrar","required|trim|min_length[6]|max_length[11]|matches[password]");
 
         $this->form_validation->set_message(
             array(

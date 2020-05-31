@@ -106,37 +106,6 @@ class Userop extends CI_Controller {
         redirect(base_url("login"));
     }
 
-    public function send_email(){
-
-        $config = array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'nihan.akinci.35@gmail.com',
-            'smtp_pass' => '********',
-            'starttls' => TRUE,
-            'charset'=>'utf-8',
-            'mailtype' => 'html',
-            'wordwrap' => TRUE,
-            'newline' => "\r\n"
-        );
-
-        $this->load->library('email', $config);
-
-        $this->email->from("nihan.akinci.35@gmail.com", "CMS");
-        $this->email->to("tombraidern@gmail.com");
-        $this->email->subject("CMS için Email Çalışmaları");
-        $this->email->message("Deneme e-postası...");
-
-        $send = $this->email->send();
-
-        if($send){
-            echo "E-posta başarılı bir şekilde gönderilmiştir.";
-        } else {
-            echo $this->email->print_debugger();
-        }
-    }
-
     public function forget_password(){
 
         if(get_active_user()){
@@ -154,6 +123,89 @@ class Userop extends CI_Controller {
 
     public function reset_password(){
 
-       echo "reset pass";
+        $this->load->library("form_validation");
+
+        //kurallar yazılır..
+        $this->form_validation->set_rules("email","E-posta","required|trim|valid_email");
+
+        $this->form_validation->set_message(
+            array(
+                "required"    => "<b> {field} </b> alanı doldurulmalıdır",
+                "valid_email" => "Lütfen geçerli bir <b>e-posta</b> adresi giriniz.",
+
+            ));
+
+        if($this->form_validation->run() === FALSE){
+
+            $viewData = new stdClass();
+            
+            /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
+            $viewData->viewFolder = $this->viewFolder;
+            $viewData->subViewFolder = "forget_password";
+            $viewData->form_error = true;
+
+            $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+
+        } else {
+
+            $user = $this->user_model->get(
+                array(
+                    "isActive"  => 1,
+                    "email"     => $this->input->post("email")
+                )
+            );
+
+            if($user){
+
+                $this->load->model("emailsettings_model");
+
+                $email_settings = $this->emailsettings_model->get(
+                    array(
+                        "isActive" => 1
+                    )
+                );
+
+                $config = array(
+                    'protocol' =>  $email_settings->protocol,
+                    'smtp_host' => $email_settings->host,
+                    'smtp_port' => $email_settings->port,
+                    'smtp_user' => $email_settings->user,
+                    'smtp_pass' => $email_settings->password,
+                    'starttls' => TRUE,
+                    'charset'=>'utf-8',
+                    'mailtype' => 'html',
+                    'wordwrap' => TRUE,
+                    'newline' => "\r\n"
+                );
+        
+                $this->load->library('email', $config);
+        
+                $this->email->from($email_settings->from, $email_settings->user_name);
+                $this->email->to($user->email);
+                $this->email->subject("CMS için Email Çalışmaları");
+                $this->email->message("Deneme e-postası...");
+        
+                $send = $this->email->send();
+        
+                if($send){
+                    echo "E-posta başarılı bir şekilde gönderilmiştir.";
+                } else {
+                    echo $this->email->print_debugger();
+                }
+
+            } else {
+                
+                $alert = array(
+                    "title" => "İşlem Başarısız",
+                    "text" => "Böyle bir kullanıcı bulunamadı!!!",
+                    "type" => "error"
+                );
+
+                $this->session->set_flashdata("alert", $alert);
+
+                redirect(base_url("sifremi-unuttum"));
+            }
+
+        }
     }
 }
