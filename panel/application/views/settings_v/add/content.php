@@ -15,6 +15,7 @@
 							<li role="presentation"><a href="#tab-3"  aria-controls="tab-2" role="tab" data-toggle="tab">Misyon</a></li>
 							<li role="presentation"><a href="#tab-4"  aria-controls="tab-3" role="tab" data-toggle="tab">Vizyon</a></li>
 							<li role="presentation"><a href="#tab-5"  aria-controls="tab-4" role="tab" data-toggle="tab">Sosyal Medya</a></li>
+							<li role="presentation"><a href="#tab-7"  aria-controls="tab-6" role="tab" data-toggle="tab">Logo</a></li>
 						</ul><!-- .nav-tabs -->
 
 						<!-- Tab panes -->
@@ -101,8 +102,66 @@
 								</div><!-- .tab-pane  -->
 
 								<div role="tabpanel" class="tab-pane fade" id="tab-5">
-									<h4 class="m-b-md">Fifth Tab Content</h4>
-									<p class="lh-lg">Lorem ipsum dolor sit amet. ipsum dolor sit amet, consectetur adipisicing elit. Officia illo aspernatur facilis, nisi commodi dolor?</p>
+									<div class="row">
+											<div class="form-group col-md-8">
+												<label>E-posta Adresiniz</label>
+												<input class="form-control" placeholder="Şirketinize ait e-posta adresi" 
+												name="email" 
+												value = "<?php echo isset($form_error) ? set_value("email") : ""; ?>">
+												<?php if(isset($form_error)){ ?>
+													<small class="pull-right input-form-error"><?php echo form_error("email"); ?></small>
+												<?php } ?>	
+											</div>
+									</div>
+									<div class="row">
+											<div class="form-group col-md-4">
+												<label>Facebook</label>
+												<input class="form-control" placeholder="Facebook Adresiniz" 
+													name="facebook" 
+													value = "<?php echo isset($form_error) ? set_value("facebook") : ""; ?>">
+												<?php if(isset($form_error)){ ?>
+												<small class="pull-right input-form-error"><?php echo form_error("facebook"); ?></small>
+												<?php } ?>	
+											</div>
+											<div class="form-group col-md-4">
+												<label>Twitter</label>
+												<input class="form-control" placeholder="Twitter Adresiniz" 
+												name="twitter" 
+												value = "<?php echo isset($form_error) ? set_value("twitter") : ""; ?>">
+												<?php if(isset($form_error)){ ?>
+													<small class="pull-right input-form-error"><?php echo form_error("twitter"); ?></small>
+												<?php } ?>	
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-md-4">
+												<label>Instagram</label>
+												<input class="form-control" placeholder="Instagram Adresiniz" 
+													name="instagram" 
+													value = "<?php echo isset($form_error) ? set_value("instagram") : ""; ?>">
+												<?php if(isset($form_error)){ ?>
+												<small class="pull-right input-form-error"><?php echo form_error("instagram"); ?></small>
+												<?php } ?>	
+											</div>
+											<div class="form-group col-md-4">
+												<label>LinkedIn</label>
+												<input class="form-control" placeholder="LinkedIn Adresiniz" 
+												name="linkedin" 
+												value = "<?php echo isset($form_error) ? set_value("linkedin") : ""; ?>">
+												<?php if(isset($form_error)){ ?>
+													<small class="pull-right input-form-error"><?php echo form_error("linkedin"); ?></small>
+												<?php } ?>	
+											</div>
+										</div>
+								</div><!-- .tab-pane  -->
+
+								<div role="tabpanel" class="tab-pane fade" id="tab-7">
+									<div class="row">
+										<div class="form-group col-md-6">
+											<label for="exampleInputFile">Görsel Seçiniz</label>
+											<input type="file" name="logo" class="form-control">
+										</div>
+									</div>
 								</div><!-- .tab-pane  -->
 							</div><!-- .tab-content  -->
 							
