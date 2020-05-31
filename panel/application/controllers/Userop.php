@@ -159,6 +159,10 @@ class Userop extends CI_Controller {
 
                 $this->load->model("emailsettings_model");
 
+                $this->load->helper("string");
+
+                $temp_password = random_string();
+
                 $email_settings = $this->emailsettings_model->get(
                     array(
                         "isActive" => 1
@@ -182,15 +186,50 @@ class Userop extends CI_Controller {
         
                 $this->email->from($email_settings->from, $email_settings->user_name);
                 $this->email->to($user->email);
-                $this->email->subject("CMS için Email Çalışmaları");
-                $this->email->message("Deneme e-postası...");
+                $this->email->subject("Şifremi Unuttum");
+                $this->email->message("CMS'e geçici olarak <b>{$temp_password}</b> şifresiyle giriş yapabilirsiniz.");
         
                 $send = $this->email->send();
         
                 if($send){
+
                     echo "E-posta başarılı bir şekilde gönderilmiştir.";
+
+                    $this->user_model->update(
+                        array(
+                            "id" => $user->id
+                        ),
+                        array(
+                            "password" => md5($temp_password)
+                        )
+                    );
+
+                        $alert = array(
+                            "title" => "İşlem Başarılı",
+                            "text" => "Şifreniz başarılı bir şekilde resetlendi. Lütfen E-postanızı kontrol ediniz.",
+                            "type" => "success"
+                        );
+        
+                        $this->session->set_flashdata("alert", $alert);
+        
+                        redirect(base_url("login"));
+
+                        die();
+
                 } else {
-                    echo $this->email->print_debugger();
+                    
+                    //echo $this->email->print_debugger();
+                    $alert = array(
+                        "title" => "İşlem Başarısız",
+                        "text" => "E-posta gönderilirken bir problem oluştu.",
+                        "type" => "error"
+                    );
+    
+                    $this->session->set_flashdata("alert", $alert);
+    
+                    redirect(base_url("sifremi-unuttum"));
+
+                    die();
                 }
 
             } else {
