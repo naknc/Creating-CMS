@@ -22,7 +22,7 @@ class Settings extends CI_Controller {
         /**Tablodan Verilerin Getirilmesi.. */
         $item = $this->settings_model->get();
 
-        if(!$item)
+        if($item)
             $viewData->subViewFolder = "update";
         else
             $viewData->subViewFolder = "no_content";
@@ -303,6 +303,10 @@ class Settings extends CI_Controller {
             );
 
         }
+
+        //session Update İşlemi
+        $settings = $this->settings_model->get();
+        $this->session->set_userdata("settings", $settings);
 
         //İşlemin Sonucunu Session'a yazma işlemi...
         $this->session->set_flashdata("alert", $alert);
