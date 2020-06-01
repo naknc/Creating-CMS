@@ -68,9 +68,21 @@ function get_settings(){
     $t->load->model("settings_model");
 
     if($t->session->userdata("settings")){
+
         $settings =  $t->session->userdata("settings");
+        
     } else {
+
         $settings = $t->settings_model->get();
+
+        if(!$settings){
+
+            $settings = new stdClass();
+
+            $settings->company_name = "dolphin";
+            $settings->logo = "default";
+        }
+
         $t->session->set_userdata("settings", $settings);
     }
 

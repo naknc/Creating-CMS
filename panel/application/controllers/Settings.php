@@ -59,6 +59,8 @@ class Settings extends CI_Controller {
                 "type"  => "error"
             );
 
+            
+
             //İşlemin Sonucunu Session'a yazma işlemi...
             $this->session->set_flashdata("alert", $alert);
 
@@ -145,6 +147,8 @@ class Settings extends CI_Controller {
                         "type"  => "error"
                     );
 
+                    
+
                     $this->session->set_flashdata("alert", $alert);
 
                     redirect(base_url("settings/new_form"));
@@ -152,6 +156,10 @@ class Settings extends CI_Controller {
                     die();
 
             }
+            
+            //session Update İşlemi
+            $settings = $this->settings_model->get();
+            $this->session->set_userdata("settings", $settings);
 
             $this->session->set_flashdata("alert", $alert);
 
@@ -187,6 +195,7 @@ class Settings extends CI_Controller {
         $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
 
     }
+    
     public function update($id){
       
         $this->load->library("form_validation");
