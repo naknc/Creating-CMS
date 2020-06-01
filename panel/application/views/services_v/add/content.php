@@ -1,13 +1,13 @@
 <div class="row">
 	<div class="col-md-12">
 		<h4 class="m-b-lg">
-			Yeni Referans Ekle
+			Yeni Hizmet Ekle
 		</h4>
 	</div><!-- END column -->
 	<div class="col-md-12">
 	<div class="widget">
 		<div class="widget-body">
-			<form action="<?php echo base_url("references/save");?>" method="post" enctype="multipart/form-data">
+			<form action="<?php echo base_url("services/save");?>" method="post" enctype="multipart/form-data">
 				
 				<div class="form-group">
 					<label>Başlık</label>
@@ -28,7 +28,7 @@
 				</div>
 				
 				<button type="submit" class="btn btn-primary btn-md btn-outline">Kaydet</button>
-				<a href="<?php echo base_url("references");?>" class="btn btn-md btn-danger btn-outline">İptal</a>
+				<a href="<?php echo base_url("services");?>" class="btn btn-md btn-danger btn-outline">İptal</a>
 
 			</form>
 		</div><!-- .widget-body -->

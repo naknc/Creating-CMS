@@ -123,35 +123,35 @@ class Services extends CI_Controller {
                 );
             }
 
-        } else {
-            $alert = array(
+            } else {
+                $alert = array(
                 "title" => "İşlem Başarısız",
                 "text"  => "Görsel yüklenirken bir problem oluştu",
                 "type"  => "error"
-            );
+                );
 
-            $this->session->set_flashdata("alert", $alert);
+                $this->session->set_flashdata("alert", $alert);
 
-            redirect(base_url("services/new_form"));
+                redirect(base_url("services/new_form"));
 
-            die();
+                die();
 
-        }
+            }
 
         $this->session->set_flashdata("alert", $alert);
 
         redirect(base_url("services"));
 
 
-    } else {
+        } else {
             $viewData = new stdClass();
-        
-        /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
-        $viewData->viewFolder = $this->viewFolder;
-        $viewData->subViewFolder = "add";
-        $viewData->form_error = true;
+            
+            /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
+            $viewData->viewFolder = $this->viewFolder;
+            $viewData->subViewFolder = "add";
+            $viewData->form_error = true;
 
-        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+            $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
 
         }
         
