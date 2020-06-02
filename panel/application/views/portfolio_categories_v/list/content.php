@@ -19,17 +19,15 @@
 
 					<table class="table table-hover table-striped table-bordered content-container">
 						<thead>
-							<th class="order w50"><i class="fa fa-reorder"></i></th>
 							<th class="w50">#id</th>
 							<th>Başlık</th>
 							<th>Durumu</th>
 							<th>İşlem</th>
 						</thead>
-						<tbody class="sortable" data-url="<?php echo base_url("portfolio_categories/rankSetter"); ?>">
+						<tbody>
 
 							<?php foreach($items as $item) { ?>
-							<tr id="ord-<?php echo $item->id; ?>">
-								<td class="order"><i class="fa fa-reorder"></i></td>
+							<tr>
 								<td class="w50 text-center"><?php echo $item->id; ?></td>
 								<td><?php echo $item->title; ?></td>
 								

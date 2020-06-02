@@ -126,6 +126,7 @@ class Portfolio_categories extends CI_Controller {
     }
 
     public function update($id){
+
         $this->load->library("form_validation");
 
         //kurallar yazılır..
@@ -142,94 +143,60 @@ class Portfolio_categories extends CI_Controller {
         $validate = $this->form_validation->run();
 
         if($validate){
-            
-            //upload süreci...
-            if($_FILES["img_url"]["name"]!==""){
-                $file_name = convertToSEO(pathinfo($_FILES["img_url"]["name"], PATHINFO_FILENAME)) . "." . pathinfo($_FILES["img_url"]["name"], PATHINFO_EXTENSION);
+                
+                //upload süreci...
 
-                $config["allowed_types"] = "jpg|jpeg|png";
-                $config["upload_path"] = "uploads/$this->viewFolder/";
-                $config["file_name"] = $file_name;
-                    
-                $this->load->library("upload", $config);
-        
-                $upload = $this->upload->do_upload("img_url");
-        
-                if($upload){
-        
-                    $uploaded_file = $this->upload->data("file_name");
-                    
-                    $data = array(
-                        "title"         => $this->input->post("title"),
-                        "img_url"       => $uploaded_file
-                    ); 
-        
-                } else {
-                    $alert = array(
-                        "title" => "İşlem Başarısız",
-                        "text"  => "Görsel yüklenirken bir problem oluştu",
-                        "type"  => "error"
-                    );
-        
-                    //İşlemin Sonucunu Session'a yazma işlemi...
-                    $this->session->set_flashdata("alert", $alert);
-        
-                    redirect(base_url("portfolio_categories/update_form/$id"));
-        
-                    die();
-                }
+            $update = $this->portfolio_category_model->update(
+                array(
+                    "id" => $id 
+                ), 
+                array(
+                    "title"         => $this->input->post("title"),
+                )
+            );
+
+            //TODO Alert sistemi eklenecek...
+            if($update){
+
+                $alert = array(
+                    "title" => "İşlem Başarılı",
+                    "text"  => "Kayıt başarılı bir şekilde güncellendi",
+                    "type"  => "success"
+                );
+
             } else {
 
-                $data = array(
-                    "title"         => $this->input->post("title")
-                    ); 
+                $alert = array(
+                    "title" => "İşlem Başarısız",
+                    "text"  => "Kayıt güncelleme sırasında bir problem oluştu",
+                    "type"  => "error"
+                );
 
-                }
+            }
 
-        }
+            //İşlemin Sonucunu Session'a yazma işlemi...
+            $this->session->set_flashdata("alert", $alert);
 
-        $update = $this->portfolio_category_model->update(array("id" => $id ), $data);
-
-        //TODO Alert sistemi eklenecek...
-        if($update){
-
-            $alert = array(
-                "title" => "İşlem Başarılı",
-                "text"  => "Kayıt başarılı bir şekilde güncellendi",
-                "type"  => "success"
-            );
+            redirect(base_url("portfolio_categories"));
 
         } else {
 
-            $alert = array(
-                "title" => "İşlem Başarısız",
-                "text"  => "Kayıt güncelleme sırasında bir problem oluştu",
-                "type"  => "error"
+            $viewData = new stdClass();
+            
+            /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
+            $viewData->viewFolder = $this->viewFolder;
+            $viewData->subViewFolder = "update";
+            $viewData->form_error = true;
+
+            /**Tablodan Verilerin Getirilmesi.. */
+            $viewData->item = $this->portfolio_category_model->get(
+                array(
+                    "id"   => $id
+                )
             );
 
+            $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
         }
-
-        //İşlemin Sonucunu Session'a yazma işlemi...
-        $this->session->set_flashdata("alert", $alert);
-
-        redirect(base_url("portfolio_categories"));
-
-            $viewData = new stdClass();
-        
-        /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
-        $viewData->viewFolder = $this->viewFolder;
-        $viewData->subViewFolder = "update";
-        $viewData->form_error = true;
-
-        /**Tablodan Verilerin Getirilmesi.. */
-        $viewData->item = $this->portfolio_category_model->get(
-            array(
-                "id"        => $id
-            )
-        );
-
-        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
-        
     }
 
     public function delete($id){
@@ -347,28 +314,5 @@ class Portfolio_categories extends CI_Controller {
 
         }
 
-    }
-
-    public function rankSetter(){
-    
-        $data = $this->input->post("data");
-
-        parse_str($data, $order);
-        
-        $items = $order["ord"];
-
-        foreach($items as $rank => $id){
-
-            $this->portfolio_category_model->update(
-                array(
-                    "id"        => $id,
-                    "rank !="   => $rank
-                ),
-                array(
-                    "rank"      => $rank
-                )
-            );
-
-        }
     }
 }
