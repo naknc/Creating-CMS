@@ -44,24 +44,10 @@ class Portfolio_categories extends CI_Controller {
     }
 
     public function save(){
+
         $this->load->library("form_validation");
 
         //kurallar yazılır..
-         if($_FILES["img_url"]["name"] == ""){
-                
-             $alert = array(
-                "title" => "İşlem Başarısız",
-                "text"  => "Lütfen bir görsel seçiniz",
-                "type"  => "error"
-            );
-
-            //İşlemin Sonucunu Session'a yazma işlemi...
-            $this->session->set_flashdata("alert", $alert);
-
-            redirect(base_url("portfolio_categories/new_form"));
-
-            die();
-        }
 
         $this->form_validation->set_rules("title","Başlık","required|trim");
 
@@ -78,26 +64,8 @@ class Portfolio_categories extends CI_Controller {
 
                 //upload süreci...
 
-            $file_name = convertToSEO(pathinfo($_FILES["img_url"]["name"], PATHINFO_FILENAME)) . "." . pathinfo($_FILES["img_url"]["name"], PATHINFO_EXTENSION);
-
-            $config["allowed_types"] = "jpg|jpeg|png";
-            $config["upload_path"] = "uploads/$this->viewFolder/";
-            $config["file_name"] = $file_name;
-            
-            $this->load->library("upload", $config);
-
-            $upload = $this->upload->do_upload("img_url");
-
-            if($upload){
-
-                $uploaded_file = $this->upload->data("file_name");
-                
-                $data = 
-
                 $insert = $this->portfolio_category_model->add(array(
                     "title"         => $this->input->post("title"),
-                    "img_url"       => $uploaded_file,
-                    "rank"          => 0,
                     "isActive"      => 1,
                     "createdAt"     => date("Y-m-d H:i:s")
                     )
@@ -121,38 +89,21 @@ class Portfolio_categories extends CI_Controller {
                 );
             }
 
-        } else {
-            $alert = array(
-                "title" => "İşlem Başarısız",
-                "text"  => "Görsel yüklenirken bir problem oluştu",
-                "type"  => "error"
-            );
-
-            $this->session->set_flashdata("alert", $alert);
-
-            redirect(base_url("portfolio_categories/new_form"));
-
-            die();
-
-        }
-
         $this->session->set_flashdata("alert", $alert);
 
         redirect(base_url("portfolio_categories"));
 
 
-    } else {
+        } else {
             $viewData = new stdClass();
         
-        /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
-        $viewData->viewFolder = $this->viewFolder;
-        $viewData->subViewFolder = "add";
-        $viewData->form_error = true;
+            /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
+            $viewData->viewFolder = $this->viewFolder;
+            $viewData->subViewFolder = "add";
+            $viewData->form_error = true;
 
-        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
-
+            $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
         }
-        
     }
 
     public function update_form($id){
