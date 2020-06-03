@@ -141,6 +141,12 @@ class Portfolio extends CI_Controller {
             )
         );
 
+        $viewData->categories = $this->portfolio_category_model->get_all(
+            array(
+                "isActive" => 1
+            )
+        );
+
         /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
         $viewData->viewFolder = $this->viewFolder;
         $viewData->subViewFolder = "update";
@@ -151,10 +157,15 @@ class Portfolio extends CI_Controller {
     }
 
     public function update($id){
+
         $this->load->library("form_validation");
 
         //kurallar yazılır..
         $this->form_validation->set_rules("title","Başlık","required|trim");
+
+        $this->form_validation->set_rules("category_id","Kategori","required|trim");
+        $this->form_validation->set_rules("client","Müşteri","required|trim");
+        $this->form_validation->set_rules("finishedAt","Bitiş Tarihi","required|trim");
 
         $this->form_validation->set_message(
             array(
@@ -172,10 +183,16 @@ class Portfolio extends CI_Controller {
                 array(
                     "id" => $id
                 ),
+
                 array(
                     "title"         => $this->input->post("title"),
                     "description"   => $this->input->post("description"),
-                    "url"           => convertToSEO($this->input->post("title"))
+                    "url"           => convertToSEO($this->input->post("title")),
+                    "client"        => $this->input->post("client"),
+                    "finishedAt"    => $this->input->post("finishedAt"),
+                    "category_id"   => $this->input->post("category_id"),
+                    "place"         => $this->input->post("place"),
+                    "portfolio_url" => $this->input->post("portfolio_url")
                 )
             );
 
@@ -199,35 +216,32 @@ class Portfolio extends CI_Controller {
             }
 
             $this->session->set_flashdata("alert", $alert);
-
             redirect(base_url("portfolio"));
 
         } else {
 
             $viewData = new stdClass();
 
-            /**Tablodan Verilerin Getirilmesi.. */
-        $item = $this->portfolio_model->get(
-            array(
-                "id"        => $id
-            )
-        );
-        
-        /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
-        $viewData->viewFolder = $this->viewFolder;
-        $viewData->subViewFolder = "update";
-        $viewData->form_error = true;
-        $viewData->item = $item;
+            $item = $this->portfolio_model->get(
+                array(
+                    "id"        => $id
+                )
+            );
+            
+            /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
+            $viewData->viewFolder = $this->viewFolder;
+            $viewData->subViewFolder = "update";
+            $viewData->form_error = true;
+            $viewData->item = $item;
+            $viewData->categories = $this->portfolio_category_model->get_all(
+                array(
+                    "isActive" => 1
+                )
+            );
 
-        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+            $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
 
         }
-        //başarılı ise kayıt işlemi başlatılır
-        //
-        //başarısız ise hata ekranda gösterilir
-        //
-        //
-        
     }
 
     public function delete($id){
