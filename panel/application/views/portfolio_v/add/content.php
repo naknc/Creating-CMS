@@ -19,11 +19,9 @@
 					<div class="form-group col-md-6">
 						<label>Kategori</label>
 							<select name="category_id" class="form-control">
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
+								<?php foreach($categories as $category) { ?>
+									<option value="<?php echo $category->id; ?>"><?php echo $category->title; ?></option>
+								<?php } ?>
 							</select>
 							<?php if(isset($form_error)){ ?>
 								<small class="pull-right input-form-error"><?php echo form_error("client"); ?></small>

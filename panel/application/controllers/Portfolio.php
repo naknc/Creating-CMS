@@ -37,6 +37,12 @@ class Portfolio extends CI_Controller {
     public function new_form(){
         $viewData = new stdClass();
         
+        $viewData->categories = $this->portfolio_category_model->get_all(
+            array(
+                "isActive" => 1
+            )
+        );
+
         /** View'e gönderilecek Değişkenlerin Set Edilmesi.. */
         $viewData->viewFolder = $this->viewFolder;
         $viewData->subViewFolder = "add";
