@@ -52,10 +52,14 @@ class Portfolio extends CI_Controller {
     }
 
     public function save(){
+
         $this->load->library("form_validation");
 
         //kurallar yazılır..
         $this->form_validation->set_rules("title","Başlık","required|trim");
+        $this->form_validation->set_rules("category_id","Kategori","required|trim");
+        $this->form_validation->set_rules("client","Müşteri","required|trim");
+        $this->form_validation->set_rules("finishedAt","Bitiş Tarihi","required|trim");
 
         $this->form_validation->set_message(
             array(
@@ -63,8 +67,6 @@ class Portfolio extends CI_Controller {
             )
         );
 
-        //Form validation çalıştırılır
-        //TRUE - FALSE
         $validate = $this->form_validation->run();
 
         if($validate){
@@ -74,6 +76,11 @@ class Portfolio extends CI_Controller {
                     "title"         => $this->input->post("title"),
                     "description"   => $this->input->post("description"),
                     "url"           => convertToSEO($this->input->post("title")),
+                    "client"        => $this->input->post("client"),
+                    "finishedAt"    => $this->input->post("finishedAt"),
+                    "category_id"   => $this->input->post("category_id"),
+                    "place"         => $this->input->post("place"),
+                    "portfolio_url" => $this->input->post("portfolio_url"),
                     "rank"          => 0,
                     "isActive"      => 1,
                     "createdAt"     => date("Y-m-d H:i:s")

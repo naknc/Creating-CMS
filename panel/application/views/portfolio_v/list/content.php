@@ -38,7 +38,7 @@
 								<td class="text-center"><?php echo $item->url; ?></td>
 								<td class="text-center"><?php echo $item->category_id; ?></td>
 								<td class="text-center"><?php echo $item->client; ?></td>
-								<td class="text-center"><?php echo $item->finishedAt; ?></td>
+								<td class="text-center"><?php echo get_readable_date($item->finishedAt); ?></td>
 								<td class="text-center">
 									<input
 										data-url="<?php echo base_url("portfolio/isActiveSetter/$item->id")?>"

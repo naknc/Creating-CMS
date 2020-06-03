@@ -9,7 +9,8 @@ function convertToSEO($text){
 
 function get_readable_date($date){
 
-    return strftime('%e %B %Y', strtotime($date));
+    setlocale(LC_TIME, 'turkish');
+    return iconv('latin5','utf-8',strftime("%#d %B %Y", strtotime($date)));
 
 }
 
