@@ -16,7 +16,7 @@
 				<th>Kapak</th>
 				<th>İşlem</th>
 			</thead>
-			<tbody class="sortable"data-url="<?php echo base_url("product/imageRankSetter"); ?>">
+			<tbody class="sortable"data-url="<?php echo base_url("portfolio/imageRankSetter"); ?>">
 			
 			<?php foreach($item_images as $image) { ?>
 				
@@ -27,7 +27,7 @@
 					<td><?php echo $image->img_url; ?></td>
 					<td class="w100 text-center">
 						<input
-							data-url="<?php echo base_url("product/imageIsActiveSetter/$image->id") ?>"
+							data-url="<?php echo base_url("portfolio/imageIsActiveSetter/$image->id") ?>"
 							class="isActive"
 							type="checkbox" 
 							data-switchery 
@@ -37,7 +37,7 @@
 					</td>
 					<td class="w100 text-center">
 						<input
-							data-url="<?php echo base_url("product/isCoverSetter/$image->id/$image->product_id") ?>"
+							data-url="<?php echo base_url("portfolio/isCoverSetter/$image->id/$image->portfolio_id") ?>"
 							class="isCover"
 							type="checkbox" 
 							data-switchery 
@@ -47,7 +47,7 @@
 					</td>
 					<td class="w100 text-center">
 						<button 
-							data-url="<?php echo base_url("product/imageDelete/$image->id/$image->product_id") ?>" 
+							data-url="<?php echo base_url("portfolio/imageDelete/$image->id/$image->portfolio_id") ?>" 
 							class="btn btn-sm btn-danger btn-outline btn-block remove-btn">
 							<i class="fa fa-trash"></i> Sil
 						</button>
